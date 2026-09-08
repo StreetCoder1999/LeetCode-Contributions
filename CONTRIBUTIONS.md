@@ -1,99 +1,73 @@
-# My LeetCode Contributions
+# LeetCode Contributions
 
-This document tracks all my contributions, test cases, and issues raised on LeetCode.
-
-## 📋 Contribution Summary
-
-| Category | Count | Status |
-|----------|-------|--------|
-| Test Cases Submitted | | |
-| Issues Raised | 1 | Active |
-| Problems Solved | | |
-| Community Impact | Improving problem quality | ✅ |
-
-## 🎯 Active Issues & Contributions
-
-### Issue #37912 - LeetCode-Feedback
-
-**Status**: Active  
-**Type**: Test Case Contribution  
-**Repository**: [LeetCode-Feedback/LeetCode-Feedback](https://github.com/LeetCode-Feedback/LeetCode-Feedback)  
-**Link**: [Issue #37912](https://github.com/LeetCode-Feedback/LeetCode-Feedback/issues/37912)  
-
-**Description**: 
-[Add your detailed description here]
-
-**Key Points**:
-- ✅ Test case contribution
-- ✅ Edge case coverage
-- ✅ Problem improvement
+A collection of my test case contributions and bug reports to LeetCode, helping improve problem quality and catch edge cases that faulty solutions might miss.
 
 ---
 
-## 📝 Test Case Categories
+## 🎯 Contribution: Issue #37912
 
-### Edge Cases Discovered
-- [Add specific edge cases you discovered]
+### Problem: 86. Partition List
+**[View on LeetCode](https://leetcode.com/problems/partition-list/description/)**
 
-### Boundary Conditions
-- [Add boundary conditions tested]
+### 🐛 Bug Found: Missing Edge Case with Negative Sentinel Values
 
-### Performance Validations
-- [Add performance-related test cases]
-
----
-
-## 🏆 Community Impact
-
-### Problems Improved
-- Enhanced test coverage for various LeetCode problems
-- Identified critical edge cases
-- Contributed to better problem clarity
-
-### Quality Metrics
-- Problems reviewed: [#]
-- Test cases submitted: [#]
-- Community feedback: [#]
+**Status**: Closed ✅  
+**Issue Link**: [#37912 - LeetCode-Feedback](https://github.com/LeetCode-Feedback/LeetCode-Feedback/issues/37912)
 
 ---
 
-## 📈 Growth Timeline
+### The Problem
 
-### 2026
-- **September**: Started formal LeetCode contributions tracking
-- [Add more milestones]
+The original test suite was missing a critical edge case where linked list nodes contain negative values, specifically `-1`.
+
+Many faulty solutions were using `-1` as a **sentinel value** (a marker) to track whether the "greater partition" had been initialized. These solutions would incorrectly fail when the actual linked list contained `-1` as a valid node value.
+
+### ✨ My Test Case
+
+```
+Input:  head = [-1, 5], x = -2
+Output: [-1, 5]
+```
+
+**Why this matters:**
+- Since `-1 ≥ -2`, the node with value `-1` belongs in the "greater partition"
+- Expected output: `[-1, 5]` (unchanged)
+- Faulty solutions would fail because they check `if (greaterTemp.val == -1)` to detect initialization
+- When the first node is actually `-1`, this condition becomes ambiguous
+
+### 🔍 Root Cause
+
+Faulty solutions used this pattern:
+```java
+ListNode greaterTemp = new ListNode(-1);  // Using -1 as sentinel
+
+if (greaterTemp.val == -1)  // Check if initialized
+    greaterTemp = temp;
+
+if (greaterTemp.val != -1)  // Check if partition exists
+    smallerTemp.next = greaterTemp;
+```
+
+This breaks when `-1` is a valid node value in the input!
+
+### ✅ Impact
+
+- Caught solutions that weren't properly handling negative node values
+- Forced algorithm improvements to use proper initialization tracking (e.g., `null` references instead of magic values)
+- Improved test suite quality for LeetCode Problem 86
 
 ---
 
-## 🔍 Contribution Quality Checklist
+## 💡 Key Takeaway
 
-For each contribution, I ensure:
-- ✅ Comprehensive edge case coverage
-- ✅ Clear problem understanding
-- ✅ Well-documented test cases
-- ✅ Performance considerations
-- ✅ Constructive community feedback
+This contribution shows the importance of:
+- Testing **boundary conditions** (negative numbers, edge values)
+- Avoiding **magic values** as sentinels when they could be valid inputs
+- Thinking about **corner cases** that break common implementation patterns
 
 ---
 
-## 🎓 Learning Outcomes
-
-Through my contributions, I've learned:
-- Problem analysis and decomposition
-- Test case design principles
-- Community collaboration
-- Code review practices
-
----
-
-## 📞 For Recruiters
-
-This document demonstrates:
-- **Initiative**: Proactive community contributions
-- **Quality**: Thoughtful test case design
-- **Communication**: Clear issue documentation
-- **Problem-Solving**: Ability to identify and improve edge cases
-
----
-
-**Last Updated**: September 2026
+**Contribution Status**: Accepted by LeetCode  
+**Problem ID**: 86  
+**Category**: Missing Test Case / Bug Report  
+**Date**: September 2026
